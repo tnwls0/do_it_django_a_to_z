@@ -7,14 +7,35 @@ class TestView(TestCase):
     def setUp(self):
         self.client = Client()
 
+    def navbar_test(self, soup):
+        navbar = soup.nav
+
+
+        self.assertIn('Blog', navbar.text)
+        self.assertIn('About Me', navbar.text)
+
+        #<a> 텍스트가 '스마트 부산'인 href가 '/' 와 동일한지
+        logo_btn = navbar.find('a', text ='스마트 부산')
+        self.assertIn(logo_btn.attrs['href'],'/')
+
+        home_btn = navbar.find('a', text='Home')
+        self.assertIn(home_btn.attrs['href'], '/')
+
+        blog_btn = navbar.find('a', text ='Blog')
+        self.assertIn(blog_btn.attrs['href'], '/blog/')
+
+        about_me_btn = navbar.find('a', text ='About Me')
+        self.assertIn(about_me_btn.attrs['href'], '/about_me/')
+
+
     def test_post_list(self):
         response = self.client.get('/blog/')
         self.assertEqual(response.status_code, 200)
         soup=BeautifulSoup(response.content, 'html.parser')
-        self.assertEqual(soup.title.text, 'Blog')
-        navbar = soup.nav
-        self.assertIn('Blog', navbar.text)
-        self.assertIn('About Me', navbar.text)
+        self.assertEqual(soup.title.text, 'Blog') #페이지의 타이틀에 Blog라는 문구가 포함되어 있는가
+
+        self.navbar_test(soup)#위에서 선언한 navbar 호출
+
 
         self.assertEqual(Post.objects.count(),0)
         main_area=soup.find('div', id='main-area')
