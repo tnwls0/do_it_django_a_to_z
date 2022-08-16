@@ -111,25 +111,22 @@ class TestView(TestCase):
 
 
     def test_post_detail(self):
+        self.assertEqual(self.post_001.get_absoulte_url(), '/blog/1/')
 
-
-        self.assertEqual(post_001.get_absoulte_url(), '/blog/1/')
-
-        response = self.client.get(post_001.get_absoulte_url())
+        response = self.client.get(self.post_001.get_absoulte_url())
         self.assertEqual(response.status_code,200)
         soup = BeautifulSoup(response.content, 'html.parser')
 
-        navbar= soup.nav
-        self.assertIn('Blog', navbar.text)
-        self.assertIn('About Me', navbar.text)
-
-        self.assertIn(post_001.title, soup.title.text)
+        self.navbar_test(soup)
+        self.assertIn(self.post_001.title, soup.title.text)
 
         main_area = soup.find('div', id='main-area')
         post_area = main_area.find('div', id= 'post-area')
-        self.assertIn(post_001.title, post_area.text)
+        self.assertIn(self.post_001.title, post_area.text)
+        self.assertIn(self.post_001.category.name, post_area.text)
 
-        self.assertIn(post_001.content, post_area.text)
+        self.assertIn(self.post_001.content, post_area.text)
+        self.assertIn(self.user_trump.username.upper(), post_area.text)
 
 
 
