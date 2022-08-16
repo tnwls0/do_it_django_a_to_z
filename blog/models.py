@@ -2,6 +2,8 @@ from django.db import models
 import os
 from django.contrib.auth.models import User
 
+
+
 class Post(models.Model):
     title = models.CharField(max_length=50)
     hook_text = models.CharField(max_length=100, blank=True)
