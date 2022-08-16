@@ -12,9 +12,10 @@ class Post(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
-    author = models.ForeignKey(User, on_delete=models.CASCADE)
+    #author = models.ForeignKey(User, on_delete=models.CASCADE)
+    author = models.ForeignKey(User, null=True, on_delete=models.SET_NULL)
     # 작성자 탈퇴 시 작성한 글 모두 자동 삭제
-    
+
     def __str__(self):
         return f'[{self.pk}]{self.title}::{self.author}'
     def get_absoulte_url(self):
