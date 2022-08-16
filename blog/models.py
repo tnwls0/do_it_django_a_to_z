@@ -2,7 +2,16 @@ from django.db import models
 import os
 from django.contrib.auth.models import User
 
+class Category(models.Model):
+    name = models.CharField(max_length=50, unique=True)
+    slug = models.SlugField(max_length=200, unique=True, allow_unicode=True)
+    # slug =url 만들기 위한 코드/ allow_unicode 는 한글로 옮길 수 있는 파라미터
 
+    def __str__(self):
+        return self.name
+
+    class Meta:
+        verbose_name_plural ='Categories'
 
 class Post(models.Model):
     title = models.CharField(max_length=50)
@@ -17,6 +26,7 @@ class Post(models.Model):
     #author = models.ForeignKey(User, on_delete=models.CASCADE)
     author = models.ForeignKey(User, null=True, on_delete=models.SET_NULL)
     # 작성자 탈퇴 시 작성한 글 모두 자동 삭제
+    category = models.ForeignKey(Category, null=True, blank=True, on_delete=models.SET_NULL)
 
     def __str__(self):
         return f'[{self.pk}]{self.title}::{self.author}'
