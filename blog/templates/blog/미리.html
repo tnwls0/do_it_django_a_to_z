@@ -1,0 +1,62 @@
+[p385] test.py
+
+self.client.post(
+	'/blog/create_post/' ,
+	{
+		'title' : 'Post Form 만들기',
+		'content': "Post Form 페이지를 만듭시다." ,
+	}
+      )
+
+self.assertEqual(Post.objects.count(), 4)
+last_post = Post.objects.last()
+self.assertEqual(last_post.title, "Post Form만들기")
+self.assertEqual(last_post.author.username, "trump")
+
+
+[p387] views.py
+
+redirect
+
+def form_valid(self,form):
+  current_user = self.request.user
+  if current_user.is_authenticated :
+    form.instance.author = current_user
+    return super(PostCreate, self).form_valid(form)
+  else:
+    return redirect('/blog/')
+
+commit !
+
+
+[p390] tests.py
+
+self.user_obama.is_staff = True
+self.user_obama.save()
+
+def test_create_post(self):에
+
+  self.client.login(username='trump', password='somepassword')
+  response = self.client.get('/blog/create_post/')
+  self.assertNotEqual(response.status_code, 200 )
+
+  self.client.login(username='obama', password='somepassword')
+
+
+  self.assertEqual(last_post.author.username, 'obama')
+
+[p393] views.py
+
+UserPassesTestMixin import하기
+
+def test_func(self):
+  return self.request.user.is_superuser or self.request.user.is_staff
+
+
+[p394] post_list.html
+
+{% if user.is_authenticated %}
+  {% if user.is_superuser or user.is_staff %}
+    <a class = 'btn btn-info btn-sm float-right' href="/blog/create_post/"role="button"><i class="fas fa-pen"></i>New Post</a>
+  {% endif %}
+{% endif %}

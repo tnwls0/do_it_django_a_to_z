@@ -50,7 +50,8 @@ class Post(models.Model):
 
     def __str__(self):
         return f'[{self.pk}]{self.title}::{self.author}'
-    def get_absoulte_url(self):
+
+    def get_absolute_url(self):
         return f'/blog/{self.pk}/'
 
     def get_file_name(self):

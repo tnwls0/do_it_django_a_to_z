@@ -6,7 +6,7 @@
                             <span class="badge rounded-pill bg-warning text-dark">{{category}}</span>
                         {% endif %}
                         {% if tag %}
-                            <span class="badge badge-light"><i class ="fas fa-tags"></i>{{ tag }} ({{tag.post_set.count}})
+                            <span class="badge badge-light text-dark"><i class ="fas fa-tags"></i>{{ tag }} ({{tag.post_set.count}})
                             </span>
                         {% endif %}
                     </h1>
@@ -16,10 +16,10 @@
                             <!-- Blog post-->
                         <div class="card mb-4" id="post-{{p.pk}}">
                             {% if p.head_image %}
-                            <a href="{{p.get_absoulte_url}}"><img class="card-img-top" src="{{p.head_image.url}}"
+                            <a href="{{p.get_absolute_url}}"><img class="card-img-top" src="{{p.head_image.url}}"
                                     alt="{{p}} head image" /></a>
                             {% else %}
-                            <a href="{{p.get_absoulte_url}}"><img class="card-img-top" src="https://picsum.photos/seed/{{p.id}}/600/200"
+                            <a href="{{p.get_absolute_url}}"><img class="card-img-top" src="https://picsum.photos/seed/{{p.id}}/600/200"
                                                                   alt="{{p}} head image" /></a>
                             {% endif %}
                             <div class="card-body" >
