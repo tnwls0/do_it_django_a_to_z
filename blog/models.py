@@ -16,6 +16,19 @@ class Category(models.Model):
     class Meta:
         verbose_name_plural ='Categories'
 
+# tag모델 추가
+class Tag(models.Model):
+    name = models.CharField(max_length=50, unique=True)
+    slug = models.SlugField(max_length=200, unique=True, allow_unicode=True)
+    # slug =url 만들기 위한 코드/ allow_unicode 는 한글로 옮길 수 있는 파라미터
+
+    def __str__(self):
+        return self.name
+
+    def get_absolute_url(self):
+        return f'/blog/tag/{self.slug}/'
+
+
 class Post(models.Model):
     title = models.CharField(max_length=50)
     hook_text = models.CharField(max_length=100, blank=True)
@@ -29,7 +42,11 @@ class Post(models.Model):
     #author = models.ForeignKey(User, on_delete=models.CASCADE)
     author = models.ForeignKey(User, null=True, on_delete=models.SET_NULL)
     # 작성자 탈퇴 시 작성한 글 모두 자동 삭제
+
     category = models.ForeignKey(Category, null=True, blank=True, on_delete=models.SET_NULL)
+    tags = models.ManyToManyField(Tag, blank=True)
+    # manytomanyfield는 null=true 기본값, 부가적으로 필요 X
+
 
     def __str__(self):
         return f'[{self.pk}]{self.title}::{self.author}'
