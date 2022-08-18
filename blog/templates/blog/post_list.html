@@ -3,14 +3,14 @@
 
                     {% if user.is_authenticated %}
                         {% if user.is_superuser or user.is_staff %}
-                            <a class="btn btn-info btn-sm float-end" href="/blog/create_post/" role="button">
+                            <a class="btn btn-info btn-sm float-end btn-dark mt-3" href="/blog/create_post/" role="button">
                                 <i class="fas fa-pen"></i>New Post</a>
                         {% endif %}
                     {% endif %}
 
                     <h1>Blog
                         {% if category %}
-                            <span class="badge rounded-pill bg-warning text-dark">{{category}}</span>
+                            <span class="badge rounded-pill bg-success text-white">{{category}}</span>
                         {% endif %}
                         {% if tag %}
                             <span class="badge badge-light text-dark"><i class ="fas fa-tags"></i>{{ tag }} ({{tag.post_set.count}})
@@ -53,7 +53,7 @@
                                     <br/>
                                 {% endif %}
 
-                                <a class="btn btn-primary" href="{{p.get_absolute_url}}">Read more →</a>
+                                <a class="btn btn-primary btn-success" href="{{p.get_absolute_url}}">Read more →</a>
                             </div>
                         </div>
                         {% endfor %}
