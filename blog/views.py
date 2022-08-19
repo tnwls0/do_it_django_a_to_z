@@ -4,6 +4,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from .models import Post, Category,Tag
 from django.utils.text import slugify
 from django.core.exceptions import PermissionDenied
+from django.db.models import Q
 
 class PostList(ListView): #상속받아서 사용
     model = Post
@@ -131,4 +132,22 @@ class PostUpdate(LoginRequiredMixin, UpdateView) :
                     tag.save()
                 self.object.tags.add(tag)
         return response
+
+
+class PostSearch(PostList): #postlist 상속받아 사용
+    paginate_by = None
+    def get_queryset(self):
+        q=self.kwargs['q']
+        post_list = Post.objects.filter(
+            Q(title__contains=q) | Q(tags__name__contains=q)
+        ).distinct()
+        return post_list
+
+    def get_context_data(self, **kwargs):
+        context=super(PostSearch, self).get_context_data()
+        q=self.kwargs['q']
+        context['search_info'] = f'Search: {q} ({self.get_queryset().count()})'
+
+        return context
+
             # Create your views here.

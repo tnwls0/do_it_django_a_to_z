@@ -9,6 +9,7 @@
                     {% endif %}
 
                     <h1>Blog
+                        {% if search_info %}<small class="text-muted">{{search_info}}</small>{% endif %}
                         {% if category %}
                             <span class="badge rounded-pill bg-success text-white">{{category}}</span>
                         {% endif %}
